@@ -1,0 +1,93 @@
+x-airflow-common:
+  &airflow-common
+  build: .
+  image: apache/airflow:3.1.7-python3.11
+  env_file:
+    - .env
+  environment:
+    &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor # Updated to LocalExecutor for Airflow 3
+    AIRFLOW__CORE__FERNET_KEY: "" # Optional: Set a fernet key for encrypting sensitive data
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true" # Updated to pause DAGs by default
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false" # Updated to not load example DAGs
+    AIRFLOW__CORE__LOGGING_LEVEL: ${LOG_LEVEL:-INFO} # Updated to use LOG_LEVEL from .env with a default of INFO
+    AIRFLOW__API__AUTH_BACKENDS: "airflow.api.auth.backend.basic_auth" # Updated to use basic auth for API
+    AIRFLOW__CORE__AUTH_MANAGER: "airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager" # Updated to use FAB auth manager
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: >-
+      mysql+mysqldb://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:${MYSQL_PORT}/${MYSQL_DATABASE}
+    AIRFLOW__API__EXPOSE_CONFIG: "true" # Updated section from webserver to api
+    AIRFLOW_UID: ${AIRFLOW_UID:-50000} # Updated to use AIRFLOW_UID from .env with a default of 50000
+  volumes: # Updated to use relative paths for volumes
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./plugins:/opt/airflow/plugins
+  user: "${AIRFLOW_UID:-50000}:0"
+  depends_on:
+    mysql:
+      condition: service_healthy
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: airflow-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - mysql-db-volume:/var/lib/mysql
+
+  airflow-api-server: # Renamed from webserver
+    <<: *airflow-common
+    container_name: airflow-api-server
+    command: api-server
+    ports:
+      - "8080:8080"
+    healthcheck:
+      # Updated health check endpoint for Airflow 3
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/api/v2/monitor/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: airflow-scheduler
+    command: scheduler
+
+  airflow-dag-processor: # NEW: Required for Airflow 3
+    <<: *airflow-common
+    container_name: airflow-dag-processor
+    command: dag-processor
+
+  airflow-init:
+    <<: *airflow-common
+    container_name: airflow-init
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        pip install apache-airflow-providers-fab &&
+        airflow db migrate &&
+        airflow fab create-admin \
+          --username airflow \
+          --password airflow \
+          --firstname Airflow \
+          --lastname Admin \
+          --email airflow@example.com &&
+        airflow db check
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql-db-volume:

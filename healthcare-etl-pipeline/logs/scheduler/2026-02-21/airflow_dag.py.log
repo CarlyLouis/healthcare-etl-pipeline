@@ -1,0 +1,18 @@
+[2026-02-21T18:52:27.012+0000] {processor.py:157} INFO - Started process (PID=163) to work on /opt/airflow/dags/airflow_dag.py
+[2026-02-21T18:52:27.014+0000] {processor.py:829} INFO - Processing file /opt/airflow/dags/airflow_dag.py for tasks to queue
+[2026-02-21T18:52:27.015+0000] {logging_mixin.py:154} INFO - [2026-02-21T18:52:27.015+0000] {dagbag.py:536} INFO - Filling up the DagBag from /opt/airflow/dags/airflow_dag.py
+[2026-02-21T18:52:28.913+0000] {logging_mixin.py:154} INFO - [2026-02-21T18:52:28.895+0000] {dagbag.py:346} ERROR - Failed to import: /opt/airflow/dags/airflow_dag.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/models/dagbag.py", line 342, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 843, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/opt/airflow/dags/airflow_dag.py", line 9, in <module>
+    import data_loader as loader
+  File "/opt/airflow/dags/data_loader.py", line 35, in <module>
+    class DataLoader:
+  File "/opt/airflow/dags/data_loader.py", line 38, in DataLoader
+    def __init__(self, db_config: dict | None = None):
+TypeError: unsupported operand type(s) for |: 'type' and 'NoneType'
+[2026-02-21T18:52:28.916+0000] {processor.py:841} WARNING - No viable dags retrieved from /opt/airflow/dags/airflow_dag.py
+[2026-02-21T18:52:28.963+0000] {processor.py:179} INFO - Processing /opt/airflow/dags/airflow_dag.py took 1.955 seconds

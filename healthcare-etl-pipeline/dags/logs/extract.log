@@ -1,0 +1,16 @@
+2026-03-02 17:29:49,515 - __main__ - INFO - Fetching indicator WHOSIS_000001 (attempt 1/3)
+2026-03-02 17:29:55,882 - __main__ - INFO - Successfully fetched indicator WHOSIS_000001
+2026-03-02 17:29:56,234 - __main__ - INFO - Saved raw data for WHOSIS_000001 to c:\Users\CarlyLOUIS\Documents\airflow_ETL\healthcare-etl-pipeline\dags\data\raw\WHOSIS_000001_raw.csv
+2026-03-02 17:29:56,235 - __main__ - INFO - Fetching indicator MDG_0000000007 (attempt 1/3)
+2026-03-02 17:30:15,825 - __main__ - INFO - Successfully fetched indicator MDG_0000000007
+2026-03-02 17:30:17,619 - __main__ - INFO - Saved raw data for MDG_0000000007 to c:\Users\CarlyLOUIS\Documents\airflow_ETL\healthcare-etl-pipeline\dags\data\raw\MDG_0000000007_raw.csv
+2026-03-02 17:30:17,619 - __main__ - INFO - Fetching indicator GHED_CHE_pc_US_SHA2011 (attempt 1/3)
+2026-03-02 17:30:21,342 - __main__ - INFO - Successfully fetched indicator GHED_CHE_pc_US_SHA2011
+2026-03-02 17:30:21,560 - __main__ - INFO - Saved raw data for GHED_CHE_pc_US_SHA2011 to c:\Users\CarlyLOUIS\Documents\airflow_ETL\healthcare-etl-pipeline\dags\data\raw\GHED_CHE_pc_US_SHA2011_raw.csv
+2026-03-02 17:30:21,560 - __main__ - INFO - Fetching indicator MDG_0000000026 (attempt 1/3)
+2026-03-02 17:30:25,321 - __main__ - INFO - Successfully fetched indicator MDG_0000000026
+2026-03-02 17:30:25,580 - __main__ - INFO - Saved raw data for MDG_0000000026 to c:\Users\CarlyLOUIS\Documents\airflow_ETL\healthcare-etl-pipeline\dags\data\raw\MDG_0000000026_raw.csv
+2026-03-02 17:30:26,646 - __main__ - INFO - Saved combined extracted data to c:\Users\CarlyLOUIS\Documents\airflow_ETL\healthcare-etl-pipeline\dags\data\raw\extracted_data.csv
+2026-03-02 17:30:26,658 - __main__ - INFO - Extracted 4 indicators
+2026-03-02 17:30:26,659 - __main__ - INFO - Total records: 88733
+2026-03-02 17:30:26,659 - __main__ - INFO - Combined data saved to: c:\Users\CarlyLOUIS\Documents\airflow_ETL\healthcare-etl-pipeline\dags\data\raw\extracted_data.csv

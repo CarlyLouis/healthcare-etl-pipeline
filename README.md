@@ -178,6 +178,11 @@ Possible enhancements include:
 - Creating a web dashboard for real-time insights
 
 ---
+# Link to Tableau Public Dasboard:
+
+https://public.tableau.com/views/GHO_Healthcare_dashboard/Dashboard1?:language=fr-FR&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
+
+---
 
 # Author
 
